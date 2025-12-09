@@ -1,45 +1,40 @@
-# Knowledge-Based-Search-Engine
-**Demo Video :**  https://drive.google.com/file/d/17aPCmxsR7Yuweqgc6vlNplSm7IXK2Xgm/view?usp=sharing
+# AI-Powered RAG Ecosystem: Multimodal Chatbot & Knowledge Base
 
-Knowledge-Base Search Engine with Llama 2 and RAG
-This repository contains a Jupyter Notebook that demonstrates how to build an end-to-end knowledge-base search engine using the Llama 2 7B model and the Retrieval-Augmented Generation (RAG) technique.
+This repository houses two distinct Retrieval-Augmented Generation (RAG) implementations designed for advanced document analysis. It features a Multimodal RAG Chatbot capable of interpreting text and images within PDFs using local Vision-Language Models (VLMs), and a Knowledge-Base Search Engine leveraging quantized Large Language Models (LLMs) for high-precision semantic search.
 
-### Objective
-The primary goal of this project is to create a system that can answer user questions based on a specific set of private documents. Unlike a standard chatbot that relies on its general pre-trained knowledge, this RAG-based system ensures that its answers are accurate, verifiable, and grounded in the provided knowledge base.
+## Project Components
+### 1. Multimodal RAG Chatbot (Local Streamlit App)
+A local, privacy-focused chatbot that processes PDF documents containing both text and complex visual data (images/tables). It utilizes Ollama to run models locally, ensuring no data leaves your machine.
 
-### How It Works: The RAG Pipeline
-The system follows a classic Retrieval-Augmented Generation workflow:
+Core Functionality:
 
-Document Ingestion: Local documents (such as .txt or .pdf files) are loaded, parsed, and split into smaller, manageable chunks.
+Layout Parsing: Uses Unstructured to partition PDFs into text and image elements.
 
-Indexing: Each text chunk is converted into a numerical vector (embedding) that captures its semantic meaning. These embeddings are then stored in a ChromaDB vector store for efficient searching.
+Vision Capabilities: Integrates the Moondream Vision-Language Model to generate detailed textual descriptions for images found within the PDF.
 
-Retrieval: When a user asks a question, the query is also converted into an embedding. The system performs a similarity search in the vector store to find and retrieve the most relevant document chunks.
+Vector Search: Indexes text chunks and image descriptions into an InMemoryVectorStore using Nomic embeddings for semantic retrieval.
 
-Generation: The retrieved chunks are combined with the user's original query into a detailed prompt. This context-rich prompt is then fed to the Llama 2 model, which generates a final, synthesized answer that is grounded in the retrieved information.
+Interactive UI: Built with Streamlit for seamless drag-and-drop file uploading and chatting.
 
-### Tech Stack
-LLM: meta-llama/Llama-2-7b-chat-hf (quantized to 4-bit using bitsandbytes).
+### 2. Knowledge-Base Search Engine
+A deep learning pipeline designed for creating a searchable knowledge base from heterogeneous document sources (Text & PDF). This implementation focuses on high-performance inference using quantized models.
 
-Framework: LangChain for orchestrating the RAG pipeline.
+#### Core Functionality:
 
-Embedding Model: sentence-transformers/all-mpnet-base-v2 for generating text embeddings.
+Quantization: Implements 4-bit quantization (NF4) using BitsAndBytes to run the Llama-2-7b-chat model efficiently on consumer hardware (T4 GPU).
 
-Vector Store: ChromaDB for storing and retrieving document embeddings.
+Embeddings: Utilizes sentence-transformers/all-mpnet-base-v2 for state-of-the-art sentence embeddings.
 
-Core Libraries: PyTorch, Hugging Face Transformers.
+Vector Database: Persists document embeddings using ChromaDB for fast and scalable similarity search.
 
-### Getting Started
-Prerequisites:
-    Python 3.8+
-    A Hugging Face account and an access token with permission to use Llama 2.
-**Configuration**
-Hugging Face Token: To access the Llama 2 model, you need to authenticate. The notebook is set up to use Google Colab's userdata secrets. Add your Hugging Face token as a secret named Rag.
+Retrieval Chain: Deploys a LangChain RetrievalQA chain to contextualize user queries and generate concise summaries.
 
-Add Your Documents: Place your .txt or .pdf files in the /content/ directory (or modify the path in cell 19) to create your own custom knowledge base.
-
-Running the Notebook
-Execute the cells in the Jupyter Notebook sequentially to set up the environment, load the model, ingest documents, and test the RAG pipeline with your own queries.
-Python 3.8+
-
-A Hugging Face account and an access token with permission to use Llama 2.
+| Category      | Technologies / Libraries |
+| ------------- | ------------- |
+| LLMs & VLMs |Llama-2-7b-chat, Moondream (Vision), Ollama |
+| Embeddings  |Nomic-embed-text, all-mpnet-base-v2 |
+| Orchestration| LangChain (Core, Community, Ollama)  |
+| Vector Stores| ChromaDB, InMemoryVectorStore  |
+| Document Processing| Unstructured (PDF Partitioning), PyPDFLoader  |
+| Optimization| BitsAndBytes (4-bit Quantization), Accelerate  |
+| Frontend| Streamlit  |
