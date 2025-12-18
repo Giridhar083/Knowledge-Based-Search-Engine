@@ -15,9 +15,6 @@ if not os.path.exists(pdfs_directory):
 
 @st.cache_resource
 def load_models():
-    # Make sure you pulled these models in terminal:
-    # ollama pull nomic-embed-text
-    # ollama pull moondream
     embeddings = OllamaEmbeddings(model="nomic-embed-text")
     vector_store = InMemoryVectorStore(embeddings)
     model = OllamaLLM(model="moondream")
@@ -108,4 +105,5 @@ if uploaded_file:
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
                 answer = chain.invoke({"question": question, "context": context})
+
                 st.write(answer)
